@@ -1,0 +1,60 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("POSTGRES_PRISMA_URL") // uses connection pooling
+  directUrl = env("POSTGRES_URL_NON_POOLING") // uses a direct connection
+}
+
+enum Types {
+  Shoes
+  Cap
+  Hoodie
+  Shirt
+  Coat
+  Trousers
+}
+
+model Client {
+  id           String       @id 
+  name         String
+  email        String       @unique
+  avatar       String?
+  createdAt    DateTime     @default(now())
+  phone        String
+  password     String
+  commentaries Commentary[]
+
+  @@map("clients")
+}
+
+model Commentary {
+  id         String @id 
+  commentary String
+  rating     Int
+  client     Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId   String
+  item       Item   @relation(fields: [itemId], references: [id])
+  itemId     String
+
+  @@map("commentaries")
+}
+
+model Item {
+  id           String       @id 
+  name         String
+  price        Decimal      @db.Decimal(5, 2)
+  type         Types
+  quantity     Int
+  rate         Int
+  sizes        Int[]
+  url_image    String[]
+  commentaries Commentary[]
+
+  @@map("items")
+}
