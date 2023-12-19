@@ -1,3 +1,5 @@
+import * as crypto from 'crypto';
+
 export class Commentary {
   readonly id: string;
   commentary: string;

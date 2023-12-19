@@ -1,3 +1,5 @@
+import * as crypto from 'crypto';
+
 export class Item {
   readonly id: string;
   name: string;
