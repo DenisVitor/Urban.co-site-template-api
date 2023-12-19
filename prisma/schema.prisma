@@ -2,7 +2,8 @@
 // learn more about it in the docs: https://pris.ly/d/prisma-schema
 
 generator client {
-  provider = "prisma-client-js"
+  provider      = "prisma-client-js"
+  binaryTargets = ["native", "rhel-openssl-1.0.x"]
 }
 
 datasource db {
@@ -21,7 +22,7 @@ enum Types {
 }
 
 model Client {
-  id           String       @id 
+  id           String       @id
   name         String
   email        String       @unique
   avatar       String?
@@ -34,7 +35,7 @@ model Client {
 }
 
 model Commentary {
-  id         String @id 
+  id         String @id
   commentary String
   rating     Int
   client     Client @relation(fields: [clientId], references: [id], onDelete: Cascade)
@@ -46,7 +47,7 @@ model Commentary {
 }
 
 model Item {
-  id           String       @id 
+  id           String       @id
   name         String
   price        Decimal      @db.Decimal(5, 2)
   type         Types
