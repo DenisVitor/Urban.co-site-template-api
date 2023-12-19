@@ -1,4 +1,5 @@
 import { Exclude } from 'class-transformer';
+import * as crypto from 'crypto';
 
 export class Client {
   readonly id: string;
