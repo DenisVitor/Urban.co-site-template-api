@@ -38,12 +38,10 @@ export class CreateItemDto {
   rate: number;
 
   @IsArray()
-  @IsNumber()
   @ArrayMinSize(1)
   sizes: number[];
 
   @IsArray()
-  @IsString()
   @ArrayMinSize(1)
   url_image: string[];
 }
