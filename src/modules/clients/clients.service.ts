@@ -50,7 +50,7 @@ export class ClientsService {
 
   async findByEmail(email: string) {
     const findClient = await this.prisma.client.findFirst({
-      where: { email },
+      where: { email: email },
     });
 
     return findClient;
@@ -58,7 +58,7 @@ export class ClientsService {
 
   async update(id: string, updateClientDto: UpdateClientDto) {
     const client = await this.prisma.client.findUnique({
-      where: { id },
+      where: { id: id },
     });
 
     if (!client) {
@@ -66,7 +66,7 @@ export class ClientsService {
     }
 
     const updatedClient = await this.prisma.client.update({
-      where: { id },
+      where: { id: id },
       data: { ...updateClientDto },
     });
 
@@ -75,7 +75,7 @@ export class ClientsService {
 
   async remove(id: string) {
     const client = await this.prisma.client.findUnique({
-      where: { id },
+      where: { id: id },
     });
     if (!client) {
       throw new NotFoundException('client not found');
