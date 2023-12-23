@@ -53,6 +53,7 @@ model Item {
   type         Types
   quantity     Int
   rate         Int
+  sex          String?
   sizes        Int[]
   url_image    String[]
   commentaries Commentary[]
