@@ -6,6 +6,7 @@ export class Item {
   price: number;
   type: 'Shoes' | 'Cap' | 'Hoodie' | 'Shirt' | 'Coat' | 'Trousers';
   quantity: number;
+  sex?: string | undefined | null;
   rate: number;
   sizes: number[];
   url_image: string[];

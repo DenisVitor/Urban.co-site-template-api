@@ -4,6 +4,7 @@ import {
   IsEnum,
   IsNotEmpty,
   IsNumber,
+  IsOptional,
   IsString,
 } from 'class-validator';
 
@@ -32,6 +33,10 @@ export class CreateItemDto {
   @IsNumber()
   @IsNotEmpty()
   quantity: number;
+
+  @IsString()
+  @IsOptional()
+  sex?: string | undefined | null;
 
   @IsNumber()
   @IsNotEmpty()
