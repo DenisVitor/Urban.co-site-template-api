@@ -20,8 +20,16 @@ export class CommentariesController {
 
   @Post()
   @UseGuards(JwtAuthGuard)
-  create(@Body() createCommentaryDto: CreateCommentaryDto, @Request() req) {
-    return this.commentariesService.create(createCommentaryDto, req.user.id);
+  create(
+    @Body() createCommentaryDto: CreateCommentaryDto,
+    @Param() itemId: string,
+    @Request() req,
+  ) {
+    return this.commentariesService.create(
+      createCommentaryDto,
+      itemId,
+      req.user.id,
+    );
   }
 
   @Get()

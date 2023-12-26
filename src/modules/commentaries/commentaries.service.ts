@@ -1,4 +1,8 @@
-import { Injectable, NotFoundException } from '@nestjs/common';
+import {
+  ConflictException,
+  Injectable,
+  NotFoundException,
+} from '@nestjs/common';
 import { CreateCommentaryDto } from './dto/create-commentary.dto';
 import { UpdateCommentaryDto } from './dto/update-commentary.dto';
 import { PrismaService } from 'lib/prisma';
@@ -8,11 +12,22 @@ import { Commentary } from './entities/commentary.entity';
 export class CommentariesService {
   constructor(private prisma: PrismaService) {}
 
-  async create(createCommentaryDto: CreateCommentaryDto, clientId: string) {
+  async create(
+    createCommentaryDto: CreateCommentaryDto,
+    itemId: string,
+    clientId: string,
+  ) {
+    const foundCommentary = await this.prisma.commentary.findMany({
+      where: { clientId: clientId, itemId: itemId },
+    });
+
+    if (foundCommentary) {
+      throw new ConflictException('This user already commented on this item.');
+    }
     const commentaryToCreate = new Commentary();
     Object.assign(commentaryToCreate, { ...createCommentaryDto });
     await this.prisma.commentary.create({
-      data: { ...commentaryToCreate, clientId: clientId },
+      data: { ...commentaryToCreate, clientId: clientId, itemId: itemId },
     });
     return commentaryToCreate;
   }
