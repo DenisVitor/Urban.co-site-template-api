@@ -32,13 +32,8 @@ export class CommentariesService {
     return commentaryToCreate;
   }
 
-  async findAll() {
-    const findCommnetaries = await this.prisma.commentary.findMany();
-    return findCommnetaries;
-  }
-
   async findOne(clientId: string, itemId: string) {
-    const foundCommentary = await this.prisma.commentary.findMany({
+    const foundCommentary = await this.prisma.commentary.findFirst({
       where: { clientId: clientId, itemId: itemId },
     });
 

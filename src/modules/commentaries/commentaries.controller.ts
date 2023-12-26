@@ -14,7 +14,7 @@ import { CreateCommentaryDto } from './dto/create-commentary.dto';
 import { UpdateCommentaryDto } from './dto/update-commentary.dto';
 import { JwtAuthGuard } from '../auth/auth.guard';
 
-@Controller('commentaries')
+@Controller('items/:itemId/commentaries')
 export class CommentariesController {
   constructor(private readonly commentariesService: CommentariesService) {}
 
@@ -33,17 +33,12 @@ export class CommentariesController {
   }
 
   @Get()
-  findAll() {
-    return this.commentariesService.findAll();
-  }
-
-  @Get(':itemId')
   @UseGuards(JwtAuthGuard)
-  findOne(@Param('itemId') itemId: string, @Request() req) {
+  findOne(@Param(':itemId') itemId: string, @Request() req) {
     return this.commentariesService.findOne(req.user.id, itemId);
   }
 
-  @Patch(':id')
+  @Patch(':itemId')
   @UseGuards(JwtAuthGuard)
   update(
     @Request() req,
@@ -57,7 +52,7 @@ export class CommentariesController {
     );
   }
 
-  @Delete(':id')
+  @Delete(':itemId')
   @UseGuards(JwtAuthGuard)
   remove(@Request() req, @Param('id') itemId: string) {
     return this.commentariesService.remove(req.user.id, itemId);
