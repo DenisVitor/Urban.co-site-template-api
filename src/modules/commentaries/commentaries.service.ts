@@ -35,7 +35,7 @@ export class CommentariesService {
     });
 
     const createdCommentary = this.prisma.commentary.findFirst({
-      where: { id: commentaryToCreate.id },
+      where: { clientId: clientId, itemId: String(itemId.itemId) },
       include: {
         client: {
           select: {
