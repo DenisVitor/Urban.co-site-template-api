@@ -8,6 +8,7 @@ import {
   Delete,
   UseGuards,
   Request,
+  HttpCode,
 } from '@nestjs/common';
 import { CommentariesService } from './commentaries.service';
 import { CreateCommentaryDto } from './dto/create-commentary.dto';
@@ -52,6 +53,7 @@ export class CommentariesController {
     );
   }
 
+  @HttpCode(204)
   @Delete()
   @UseGuards(JwtAuthGuard)
   remove(@Request() req, @Param(':itemId') itemId: string) {

@@ -34,20 +34,7 @@ export class CommentariesService {
       },
     });
 
-    const createdCommentary = await this.prisma.commentary.findFirst({
-      where: { clientId: clientId, itemId: String(itemId.itemId) },
-      include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
-    });
-
-    return createdCommentary;
+    return commentaryToCreate;
   }
 
   async findOne(clientId: string, itemId: string) {
@@ -68,29 +55,16 @@ export class CommentariesService {
     updateCommentaryDto: UpdateCommentaryDto,
   ) {
     const foundCommentary = await this.prisma.commentary.findFirst({
-      where: { clientId: clientId, itemId: String(itemId) },
+      where: { clientId: clientId, itemId: String(itemId.itemId) },
     });
 
     if (!foundCommentary) {
       throw new NotFoundException('Commentary not found');
     }
 
-    await this.prisma.commentary.update({
+    const updatedCommentary = await this.prisma.commentary.update({
       where: { id: foundCommentary.id },
       data: { ...updateCommentaryDto },
-    });
-
-    const updatedCommentary = await this.prisma.commentary.findFirst({
-      where: { clientId: clientId, itemId: String(itemId.itemId) },
-      include: {
-        client: {
-          select: {
-            id: true,
-            name: true,
-            email: true,
-          },
-        },
-      },
     });
 
     return updatedCommentary;
