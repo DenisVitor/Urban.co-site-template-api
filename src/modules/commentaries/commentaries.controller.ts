@@ -18,7 +18,7 @@ import { JwtAuthGuard } from '../auth/auth.guard';
 export class CommentariesController {
   constructor(private readonly commentariesService: CommentariesService) {}
 
-  @Post()
+  @Post(':itemId')
   @UseGuards(JwtAuthGuard)
   create(
     @Body() createCommentaryDto: CreateCommentaryDto,
@@ -32,7 +32,7 @@ export class CommentariesController {
     );
   }
 
-  @Get()
+  @Get(':itemId')
   @UseGuards(JwtAuthGuard)
   findOne(@Param(':itemId') itemId: string, @Request() req) {
     return this.commentariesService.findOne(req.user.id, itemId);
