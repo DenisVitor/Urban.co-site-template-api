@@ -38,11 +38,11 @@ export class CommentariesController {
     return this.commentariesService.findOne(req.user.id, itemId);
   }
 
-  @Patch(':itemId')
+  @Patch()
   @UseGuards(JwtAuthGuard)
   update(
     @Request() req,
-    @Param() itemId: string,
+    @Param() itemId: { itemId: string },
     @Body() updateCommentaryDto: UpdateCommentaryDto,
   ) {
     return this.commentariesService.update(
@@ -52,9 +52,9 @@ export class CommentariesController {
     );
   }
 
-  @Delete(':itemId')
+  @Delete()
   @UseGuards(JwtAuthGuard)
-  remove(@Request() req, @Param('id') itemId: string) {
+  remove(@Request() req, @Param(':itemId') itemId: string) {
     return this.commentariesService.remove(req.user.id, itemId);
   }
 }

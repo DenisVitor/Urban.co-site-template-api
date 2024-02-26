@@ -64,23 +64,36 @@ export class CommentariesService {
 
   async update(
     clientId: string,
-    itemId: string,
+    itemId: { itemId: string },
     updateCommentaryDto: UpdateCommentaryDto,
   ) {
     const foundCommentary = await this.prisma.commentary.findFirst({
-      where: { clientId: clientId, itemId: itemId },
+      where: { clientId: clientId, itemId: String(itemId) },
     });
 
     if (!foundCommentary) {
       throw new NotFoundException('Commentary not found');
     }
 
-    const commentaryToUpdate = await this.prisma.commentary.update({
+    await this.prisma.commentary.update({
       where: { id: foundCommentary.id },
       data: { ...updateCommentaryDto },
     });
 
-    return commentaryToUpdate;
+    const updatedCommentary = await this.prisma.commentary.findFirst({
+      where: { clientId: clientId, itemId: String(itemId.itemId) },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return updatedCommentary;
   }
 
   async remove(clientId: string, itemId: string) {
@@ -92,7 +105,7 @@ export class CommentariesService {
       throw new NotFoundException('Commentary not found');
     }
 
-    return await this.prisma.commentary.delete({
+    await this.prisma.commentary.delete({
       where: { id: foundCommentary.id },
     });
   }
