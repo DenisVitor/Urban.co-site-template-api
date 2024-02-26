@@ -14,11 +14,11 @@ export class CommentariesService {
 
   async create(
     createCommentaryDto: CreateCommentaryDto,
-    itemId: string,
+    itemId: { itemId: string },
     clientId: string,
   ) {
-    const foundCommentary = await this.prisma.commentary.findMany({
-      where: { clientId: clientId, itemId: itemId },
+    const foundCommentary = await this.prisma.commentary.findFirst({
+      where: { clientId: clientId, itemId: String(itemId.itemId) },
     });
 
     if (foundCommentary) {
@@ -27,7 +27,11 @@ export class CommentariesService {
     const commentaryToCreate = new Commentary();
     Object.assign(commentaryToCreate, { ...createCommentaryDto });
     await this.prisma.commentary.create({
-      data: { ...commentaryToCreate, clientId: clientId, itemId: itemId },
+      data: {
+        ...commentaryToCreate,
+        clientId: clientId,
+        itemId: itemId.itemId,
+      },
     });
     return commentaryToCreate;
   }

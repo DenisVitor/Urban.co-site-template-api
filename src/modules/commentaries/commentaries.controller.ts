@@ -18,11 +18,11 @@ import { JwtAuthGuard } from '../auth/auth.guard';
 export class CommentariesController {
   constructor(private readonly commentariesService: CommentariesService) {}
 
-  @Post(':itemId')
+  @Post()
   @UseGuards(JwtAuthGuard)
   create(
     @Body() createCommentaryDto: CreateCommentaryDto,
-    @Param() itemId: string,
+    @Param() itemId: { itemId: string },
     @Request() req,
   ) {
     return this.commentariesService.create(
