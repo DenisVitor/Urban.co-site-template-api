@@ -32,7 +32,7 @@ export class CommentariesController {
     );
   }
 
-  @Get(':itemId')
+  @Get()
   @UseGuards(JwtAuthGuard)
   findOne(@Param(':itemId') itemId: string, @Request() req) {
     return this.commentariesService.findOne(req.user.id, itemId);

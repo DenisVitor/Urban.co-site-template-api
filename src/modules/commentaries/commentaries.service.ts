@@ -33,7 +33,21 @@ export class CommentariesService {
         itemId: itemId.itemId,
       },
     });
-    return commentaryToCreate;
+
+    const createdCommentary = await this.prisma.commentary.findFirst({
+      where: { clientId: clientId, itemId: String(itemId.itemId) },
+      include: {
+        client: {
+          select: {
+            id: true,
+            name: true,
+            email: true,
+          },
+        },
+      },
+    });
+
+    return createdCommentary;
   }
 
   async findOne(clientId: string, itemId: string) {
